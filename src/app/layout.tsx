@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   title: "Mafia Leading",
   description: "Site for Мини Пекка discord server for playing Mafia",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
