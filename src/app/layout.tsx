@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import {poppins, quicksand} from "@/util/font"
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import {Providers} from "@/redux/provider"
 
 export const metadata: Metadata = {
   title: "Mafia Leading",
@@ -16,7 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${poppins.variable} ${quicksand.variable}`}>
+      <Providers>
+        {children}
+      </Providers>
+      </body>
     </html>
   );
 }
