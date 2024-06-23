@@ -29,6 +29,7 @@ interface IGame {
     log: string,
     gameEnd: boolean,
     win: string,
+    doctorDelay: number,
 }
 interface IGameState {
     players: IPlayer[],
@@ -54,7 +55,8 @@ const initialState: IGameState = {
         dayChoose: -1,
         log: '',
         gameEnd: true,
-        win: ''
+        win: '',
+        doctorDelay: 0,
     }
 }
 
@@ -179,6 +181,7 @@ const gameSlice = createSlice({
                     gameSlice.caseReducers.checkEndGame(state)
                     state.game.phase = Phase.Night
                     state.game.day += 1
+                    if(state.game.doctorDelay !== 0) state.game.doctorDelay -= 1
                     break
                 }
                 case Phase.FirstDay: {
@@ -196,7 +199,7 @@ const gameSlice = createSlice({
             const peaceCount = state.players.filter(player => (player.role === Role.Peace || player.role === Role.Doctor || player.role === Role.Sheriff) && player.isAlive).length
             if (mafiaCount === 0) {
                 gameSlice.caseReducers.endGame(state, {payload: 'P', type: 'dashboard/endGame'})
-            } else if (mafiaCount + 1 === peaceCount) {
+            } else if (mafiaCount + 1 >= peaceCount) {
                 gameSlice.caseReducers.endGame(state, {payload: 'M', type: 'dashboard/endGame'})
             }
         },
@@ -214,7 +217,8 @@ const gameSlice = createSlice({
         },
         calculateNight: (state) => {
             const {mafia, doctor, sheriff, don} = state.game.choose
-
+            const doctorTarger = state.players.find(p => p.id === doctor)
+            if (doctorTarger?.role === Role.Doctor) state.game.doctorDelay = 3
             if (mafia !== doctor) {
                 const target = state.players.find(p => p.id === mafia)
                 if (target) {
@@ -297,7 +301,8 @@ const gameSlice = createSlice({
                 dayChoose: -1,
                 log: '',
                 gameEnd: true,
-                win: ''
+                win: '',
+                doctorDelay: 0
             }
             state.game = update
         },
