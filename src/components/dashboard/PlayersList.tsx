@@ -4,7 +4,7 @@ import {RootState} from "@/redux/store";
 
 export default function PlayersList() {
     const players = useSelector((state: RootState) => state.gameData.players)
-    const count = useSelector((state: RootState) => state.gameData.count)
+    const count = useSelector((state: RootState) => state.gameData.playersCount)
     return (
         <div className='w-1/2 flex flex-col gap-5 items-center'>
             <h2 className='text-xl font-quicksand'>Игроки <span className='inline-block ml-3 font-poppins'>{count}/12</span></h2>

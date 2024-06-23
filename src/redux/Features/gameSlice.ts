@@ -8,10 +8,10 @@ export interface IPlayer {
     id: number,
     name: string,
     score: number,
-    isAlive: boolean | null,
+    isAlive: boolean,
     role: Role.None | Role.Mafia | Role.Don | Role.Sheriff | Role.Doctor | Role.Peace,
-    checkedBySheriff: boolean | null,
-    checkedByDon: boolean | null
+    checkedBySheriff: boolean,
+    checkedByDon: boolean
 }
 interface IGame {
     alive: number,
@@ -60,11 +60,11 @@ export const addPlayer = createAsyncThunk(
         const player: IPlayer = {
             id: (getState() as RootState).gameData.playersCount,
             name,
-            isAlive: null,
+            isAlive: true,
             score: 0,
             role: Role.None,
-            checkedBySheriff: null,
-            checkedByDon: null
+            checkedBySheriff: false,
+            checkedByDon: false
         }
         dispatch(addPlayerAction(player))
     }
@@ -87,11 +87,66 @@ const gameSlice = createSlice({
             state.playersCount = 0
         },
         startGame: (state) => {
-            //roles give, alive all
+            gameSlice.caseReducers.resetGame(state)
+
+            let roles: Role[] = []
+
+            switch (state.playersCount) {
+                case 5: {
+                    roles = [Role.Mafia, Role.Doctor, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 6: {
+                    roles = [Role.Mafia, Role.Don, Role.Doctor, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 7: {
+                    roles = [Role.Mafia, Role.Mafia, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 8: {
+                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 9: {
+                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 10: {
+                    roles = [Role.Mafia, Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 11: {
+                    roles = [Role.Mafia, Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+                case 12: {
+                    roles = [Role.Mafia, Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    break
+                }
+            }
+            function shuffleArray(array: Role[]) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            roles = shuffleArray(roles)
+
+            state.players.forEach((player, index) => {
+                player.role = roles[index]
+                player.isAlive = true
+                player.checkedBySheriff = false
+                player.checkedByDon = false
+            })
+
+            state.game.isStarted = true
             state.game.action = 'Первый день'
             state.game.phase = Phase.FirstDay
-            state.game.isStarted = true
             state.game.alive = state.playersCount
+            state.game.day = 1
         },
         changePhase: (state) => {
             switch(state.game.phase) {
@@ -166,7 +221,7 @@ const gameSlice = createSlice({
 
             if (donTarget && donTarget.checkedByDon !== true) {
                 donTarget.checkedByDon = true
-                if (donTarget.role === Role.Sheriff) {
+                if (donTarget.role === Role.Sheriff || donTarget.role === Role.Doctor) {
                     const donPlayer = state.players.find(player => player.role === Role.Don)
                     if (donPlayer) {
                         donPlayer.score += 1
@@ -197,6 +252,12 @@ const gameSlice = createSlice({
             if(target) target.score += 1
         },
         resetGame: (state) => {
+            state.players.forEach(player => {
+                player.role = Role.None;
+                player.checkedBySheriff = false
+                player.checkedByDon = false
+                player.isAlive = true
+            })
             const update: IGame = {
                 alive: 0,
                 isStarted: false,
@@ -213,6 +274,11 @@ const gameSlice = createSlice({
                 log: ''
             }
             state.game = update
+        },
+        resetScores: (state) => {
+            state.players.forEach(player => {
+                player.score = 0
+            })
         },
         endGame: (state, action: PayloadAction<'MafiaWin' | 'PeaceWin'>) => {
             gameSlice.caseReducers.resetGame(state)
