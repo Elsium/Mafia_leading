@@ -73,18 +73,18 @@ const ControlPlayer = ({player}: IProps) => {
     }
 
     return (
-        <li className={`${color} select-none rounded-2xl w-5/6 h-16 p-3 flex justify-between items-center gap-2 mx-auto relative`}>
-            <div className='flex gap-2'>
-                <p className='font-quicksand font-semibold'>{player.name}</p>
-                <p className='font-poppins'>{player.score}</p>
+        <li className={`${color} select-none rounded-2xl lg:w-5/6 w-11/12 h-16 p-3 flex justify-between items-center lg:gap-2 gap-1 mx-auto relative`}>
+            <div className='flex lg:gap-2 gap-1'>
+                <p className='font-quicksand font-semibold xl:text-base lg:text-sm text-xs'>{player.name}</p>
+                <p className='font-poppins lg:text-base text-sm'>{player.score}</p>
             </div>
-            <div className='flex gap-1'>
-                <button onClick={mafia} disabled={game.phase !== Phase.Night || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.mafia ? 'bg-black rounded-full text-white' : ''}`}><WhatshotIcon/></button>
-                <button onClick={don} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Mafia || player.role === Role.Don || countPlayers < 6 || player.checkedByDon} className={`transition-opacity ${player.checkedByDon ? 'bg-red-600 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.don ? 'bg-black rounded-full text-white' : ''}`}><ExploreIcon/></button>
-                <button onClick={doctor} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Doctor && game.doctorDelay > 0} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.doctor ? 'bg-black rounded-full text-white' : ''}`}><MedicationIcon/></button>
-                <button onClick={sheriff} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Sheriff || countPlayers < 7 || player.checkedBySheriff} className={`transition-opacity ${player.checkedBySheriff ? 'bg-yellow-400 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.sheriff ? 'bg-black rounded-full text-white' : ''}`}><SearchIcon/></button>
-                <button onClick={vote} disabled={game.phase !== Phase.Vote || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.dayChoose ? 'bg-black rounded-full text-white' : ''}`}><HowToRegIcon/></button>
-                <button onClick={add} disabled={!plus} className='transition-opacity disabled:opacity-0'><PlusOneIcon/></button>
+            <div className='flex lg:gap-1 gap-0.5'>
+                <button onClick={mafia} disabled={game.phase !== Phase.Night || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.mafia ? 'bg-black rounded-full text-white' : ''}`}><WhatshotIcon fontSize={'small'}/></button>
+                <button onClick={don} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Mafia || player.role === Role.Don || countPlayers < 6 || player.checkedByDon} className={` transition-opacity ${player.checkedByDon ? 'bg-red-600 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.don ? 'bg-black rounded-full text-white' : ''}`}><ExploreIcon fontSize={'small'}/></button>
+                <button onClick={doctor} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Doctor && game.doctorDelay > 0} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.doctor ? 'bg-black rounded-full text-white' : ''}`}><MedicationIcon fontSize={'small'}/></button>
+                <button onClick={sheriff} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Sheriff || countPlayers < 7 || player.checkedBySheriff} className={`transition-opacity ${player.checkedBySheriff ? 'bg-yellow-400 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.sheriff ? 'bg-black rounded-full text-white' : ''}`}><SearchIcon fontSize={'small'}/></button>
+                <button onClick={vote} disabled={game.phase !== Phase.Vote || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.dayChoose ? 'bg-black rounded-full text-white' : ''}`}><HowToRegIcon fontSize={'small'}/></button>
+                <button onClick={add} disabled={!plus} className='transition-opacity disabled:opacity-0'><PlusOneIcon fontSize={'small'}/></button>
             </div>
         </li>
     );

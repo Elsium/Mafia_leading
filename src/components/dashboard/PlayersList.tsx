@@ -8,7 +8,7 @@ export default function PlayersList() {
     return (
         <div className='w-1/2 flex flex-col gap-5 items-center'>
             <h2 className='text-xl font-quicksand'>Игроки <span className='inline-block ml-3 font-poppins'>{count}/12</span></h2>
-            <ul className='w-full h-full grid grid-cols-3 grid-rows-4 items-center'>
+            <ul className='w-full h-full grid grid-cols-2 lg:grid-cols-3 grid-rows-4 items-center'>
                 {players.map(p => <PlayerCard key={p.id} player={p}/>)}
             </ul>
         </div>

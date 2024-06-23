@@ -124,7 +124,7 @@ const gameSlice = createSlice({
                     break
                 }
                 case 10: {
-                    roles = [Role.Mafia, Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
                     break
                 }
                 case 11: {
