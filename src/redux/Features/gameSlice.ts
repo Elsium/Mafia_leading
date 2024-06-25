@@ -26,7 +26,7 @@ interface IGame {
         sheriff: number,
     },
     dayChoose: number
-    log: string,
+    log: string[],
     gameEnd: boolean,
     win: string,
     doctorDelay: number,
@@ -53,7 +53,7 @@ const initialState: IGameState = {
             sheriff: -1
         },
         dayChoose: -1,
-        log: '',
+        log: [],
         gameEnd: true,
         win: '',
         doctorDelay: 0,
@@ -116,11 +116,11 @@ const gameSlice = createSlice({
                     break
                 }
                 case 8: {
-                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace]
+                    roles = [Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
                     break
                 }
                 case 9: {
-                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    roles = [Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
                     break
                 }
                 case 10: {
@@ -128,11 +128,11 @@ const gameSlice = createSlice({
                     break
                 }
                 case 11: {
-                    roles = [Role.Mafia, Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
                     break
                 }
                 case 12: {
-                    roles = [Role.Mafia, Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
+                    roles = [Role.Mafia, Role.Mafia, Role.Don, Role.Doctor, Role.Sheriff, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace, Role.Peace]
                     break
                 }
             }
@@ -159,12 +159,14 @@ const gameSlice = createSlice({
             state.game.alive = state.playersCount
             state.game.day = 1
             state.game.gameEnd = false
+            state.game.log.push('Первый день. Знакомство.')
         },
         changePhase: (state) => {
             switch(state.game.phase) {
                 case Phase.Day: {
                     state.game.phase = Phase.Vote
                     state.game.action = 'Голосование'
+                    state.game.log.push('Начинается дневное голосование.')
                     break
                 }
                 case Phase.Night: {
@@ -172,6 +174,7 @@ const gameSlice = createSlice({
                     gameSlice.caseReducers.calculateNight(state)
                     gameSlice.caseReducers.clearChoose(state)
                     state.game.phase = Phase.Day
+                    state.game.log.push('Наступил день. Обсуждение.')
                     break
                 }
                 case Phase.Vote: {
@@ -182,11 +185,13 @@ const gameSlice = createSlice({
                     state.game.phase = Phase.Night
                     state.game.day += 1
                     if(state.game.doctorDelay !== 0) state.game.doctorDelay -= 1
+                    !state.game.gameEnd && state.game.log.push('Наступает ночь. Мафия выбирает жертву.')
                     break
                 }
                 case Phase.FirstDay: {
                     state.game.phase = Phase.Night
                     state.game.action = 'Ночь'
+                    state.game.log.push('Наступает ночь. Мафия выбирает жертву.')
                     break
                 }
                 default: {
@@ -205,15 +210,23 @@ const gameSlice = createSlice({
         },
         MafiaChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.mafia = action.payload
+            const target = state.players.find(p => p.id === state.game.choose.mafia)
+            target && state.game.log.push(`Мафия выбрала игрока ${target.name}.`)
         },
         DonChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.don = action.payload
+            const target = state.players.find(p => p.id === state.game.choose.don)
+            target && state.game.log.push(`Дон проверяет игрока ${target.name}.`)
         },
         DoctorChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.doctor = action.payload
+            const target = state.players.find(p => p.id === state.game.choose.doctor)
+            target && state.game.log.push(`Доктор лечит игрока ${target.name}.`)
         },
         SheriffChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.sheriff = action.payload
+            const target = state.players.find(p => p.id === state.game.choose.sheriff)
+            target && state.game.log.push(`Шериф проверяет игрока ${target.name}.`)
         },
         calculateNight: (state) => {
             const {mafia, doctor, sheriff, don} = state.game.choose
@@ -224,13 +237,16 @@ const gameSlice = createSlice({
                 if (target) {
                     target.isAlive = false
                     state.game.alive -= 1
+                    state.game.log.push(`Мафия убила игрока ${target.name}.`)
                 }
             } else if (doctor !== -1 && mafia !== -1) {
                 const doctorPlayer = state.players.find(p => p.role === Role.Doctor)
                 if (doctorPlayer) {
                     doctorPlayer.score += 1
                 }
+                state.game.log.push('Мафии не удалось убить жертву.')
             }
+            if (mafia === -1) state.game.log.push('Мафия не выбрала жертву. Никто не был убит.')
 
             const sheriffTarget = state.players.find(p => p.id === sheriff)
             const donTarget = state.players.find(p => p.id === don)
@@ -272,12 +288,16 @@ const gameSlice = createSlice({
                 if (playerIndex !== -1) {
                     state.players[playerIndex].isAlive = false;
                     state.game.alive -= 1;
+                    state.game.log.push(`По результатам голосования был казнен ${state.players[playerIndex].name}.`)
                 }
-            }
+            } else state.game.log.push('Игроки решили пропустить голосование.')
         },
         addScore: (state, action: PayloadAction<number>) => {
             const target = state.players.find(p => p.id === action.payload)
-            if(target) target.score += 1
+            if(target) {
+                target.score += 1
+                state.game.log.push(`Игрок ${target.name} угадал мафию и получает очко.`)
+            }
         },
         resetGame: (state) => {
             state.players.forEach(player => {
@@ -299,7 +319,7 @@ const gameSlice = createSlice({
                     sheriff: -1
                 },
                 dayChoose: -1,
-                log: '',
+                log: [],
                 gameEnd: true,
                 win: '',
                 doctorDelay: 0
@@ -313,6 +333,8 @@ const gameSlice = createSlice({
         },
         endGame: (state, action: PayloadAction<'M' | 'P'>) => {
             const winner = action.payload;
+            if (winner === 'M') state.game.log.push('Победила мафия.')
+            else state.game.log.push('Победили мирные.')
             state.players.forEach(player => {
                 switch (winner) {
                     case 'M':

@@ -20,10 +20,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/redux/store";
 
 interface IProps {
-    player: IPlayer
+    player: IPlayer,
+    isDon: boolean,
+    isSheriff: boolean,
+    isDoctor: boolean
 }
 
-const ControlPlayer = ({player}: IProps) => {
+const ControlPlayer = ({player, isDon, isSheriff, isDoctor}: IProps) => {
     const [plus, setPlus] = useState(true)
     const game = useSelector((state: RootState) => state.gameData.game)
     const countPlayers = useSelector((state: RootState) => state.gameData.playersCount)
@@ -80,9 +83,9 @@ const ControlPlayer = ({player}: IProps) => {
             </div>
             <div className='flex lg:gap-1 gap-0.5'>
                 <button onClick={mafia} disabled={game.phase !== Phase.Night || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.mafia ? 'bg-black rounded-full text-white' : ''}`}><WhatshotIcon fontSize={'small'}/></button>
-                <button onClick={don} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Mafia || player.role === Role.Don || countPlayers < 6 || player.checkedByDon} className={` transition-opacity ${player.checkedByDon ? 'bg-red-600 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.don ? 'bg-black rounded-full text-white' : ''}`}><ExploreIcon fontSize={'small'}/></button>
-                <button onClick={doctor} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Doctor && game.doctorDelay > 0} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.doctor ? 'bg-black rounded-full text-white' : ''}`}><MedicationIcon fontSize={'small'}/></button>
-                <button onClick={sheriff} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Sheriff || countPlayers < 7 || player.checkedBySheriff} className={`transition-opacity ${player.checkedBySheriff ? 'bg-yellow-400 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.sheriff ? 'bg-black rounded-full text-white' : ''}`}><SearchIcon fontSize={'small'}/></button>
+                <button onClick={don} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Mafia || player.role === Role.Don || !isDon || player.checkedByDon} className={` transition-opacity ${player.checkedByDon ? 'bg-red-600 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.don ? 'bg-black rounded-full text-white' : ''}`}><ExploreIcon fontSize={'small'}/></button>
+                <button onClick={doctor} disabled={game.phase !== Phase.Night || !player.isAlive || !isDoctor || player.role === Role.Doctor && game.doctorDelay > 0} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.doctor ? 'bg-black rounded-full text-white' : ''}`}><MedicationIcon fontSize={'small'}/></button>
+                <button onClick={sheriff} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Sheriff || !isSheriff || player.checkedBySheriff} className={`transition-opacity ${player.checkedBySheriff ? 'bg-yellow-400 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.sheriff ? 'bg-black rounded-full text-white' : ''}`}><SearchIcon fontSize={'small'}/></button>
                 <button onClick={vote} disabled={game.phase !== Phase.Vote || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.dayChoose ? 'bg-black rounded-full text-white' : ''}`}><HowToRegIcon fontSize={'small'}/></button>
                 <button onClick={add} disabled={!plus} className='transition-opacity disabled:opacity-0'><PlusOneIcon fontSize={'small'}/></button>
             </div>

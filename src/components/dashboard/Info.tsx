@@ -17,15 +17,15 @@ const Info = () => {
             <p onClick={() => navigator.clipboard.writeText('1 мафия, 1 дон, 1 доктор, 1 шериф, 3 мирных')}
                className={`${playersCount === 7 ? '' : 'hidden'}`}>1 мафия, 1 дон, 1 доктор, 1 шериф, 3 мирных</p>
             <p onClick={() => navigator.clipboard.writeText('2 мафии, 1 дон, 1 доктор, 1 шериф, 3 мирных')}
-               className={`${playersCount === 8 ? '' : 'hidden'}`}>2 мафии, 1 дон, 1 доктор, 1 шериф, 3 мирных</p>
+               className={`${playersCount === 8 ? '' : 'hidden'}`}>1 мафии, 1 дон, 1 доктор, 1 шериф, 4 мирных</p>
             <p onClick={() => navigator.clipboard.writeText('2 мафии, 1 дон, 1 доктор, 1 шериф, 4 мирных')}
-               className={`${playersCount === 9 ? '' : 'hidden'}`}>2 мафии, 1 дон, 1 доктор, 1 шериф, 4 мирных</p>
+               className={`${playersCount === 9 ? '' : 'hidden'}`}>1 мафии, 1 дон, 1 доктор, 1 шериф, 5 мирных</p>
             <p onClick={() => navigator.clipboard.writeText('2 мафии, 1 дон, 1 доктор, 1 шериф, 5 мирных')}
                className={`${playersCount === 10 ? '' : 'hidden'}`}>2 мафии, 1 дон, 1 доктор, 1 шериф, 5 мирных</p>
             <p onClick={() => navigator.clipboard.writeText('3 мафии, 1 дон, 1 доктор, 1 шериф, 5 мирных')}
-               className={`${playersCount === 11 ? '' : 'hidden'}`}>3 мафии, 1 дон, 1 доктор, 1 шериф, 5 мирных</p>
+               className={`${playersCount === 11 ? '' : 'hidden'}`}>2 мафии, 1 дон, 1 доктор, 1 шериф, 6 мирных</p>
             <p onClick={() => navigator.clipboard.writeText('3 мафии, 1 дон, 1 доктор, 1 шериф, 6 мирных')}
-               className={`${playersCount === 12 ? '' : 'hidden'}`}>3 мафии, 1 дон, 1 доктор, 1 шериф, 6 мирных</p>
+               className={`${playersCount === 12 ? '' : 'hidden'}`}>2 мафии, 1 дон, 1 доктор, 1 шериф, 7 мирных</p>
             <span>Нажми чтобы скопировать</span>
         </div>
     );

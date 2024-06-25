@@ -584,6 +584,11 @@
   dependencies:
     undici-types "~5.26.4"
 
+"@types/overlayscrollbars@^1.12.5":
+  version "1.12.5"
+  resolved "https://registry.yarnpkg.com/@types/overlayscrollbars/-/overlayscrollbars-1.12.5.tgz#a68a4caa4d1d108a40937fae81f6d500c8300383"
+  integrity sha512-1yMmgFrq1DQ3sCHyb3DNfXnE0dB463MjG47ugX3cyade3sOt3U8Fjxk/Com0JJguTLPtw766TSDaO4NC65Wgkw==
+
 "@types/parse-json@^4.0.0":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.2.tgz#5950e50960793055845e956c427fc2b0d70c5239"
@@ -2523,6 +2528,16 @@ optionator@^0.9.3:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
     word-wrap "^1.2.5"
+
+overlayscrollbars-react@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/overlayscrollbars-react/-/overlayscrollbars-react-0.5.6.tgz#e9779f9fc2c1a3288570a45c83f8e42518bfb8c1"
+  integrity sha512-E5To04bL5brn9GVCZ36SnfGanxa2I2MDkWoa4Cjo5wol7l+diAgi4DBc983V7l2nOk/OLJ6Feg4kySspQEGDBw==
+
+overlayscrollbars@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/overlayscrollbars/-/overlayscrollbars-2.9.1.tgz#312f8b13aca3d8112660161842ed8e7b2f07544e"
+  integrity sha512-BY3hfQcQVZvi25e3YcYe06HPy9yn0lE3akBnUE02fGu3S8OyJmGFx/LDC9rjFJg6Im+YdweXLYEFJTuEhVLMvA==
 
 p-limit@^3.0.2:
   version "3.1.0"
