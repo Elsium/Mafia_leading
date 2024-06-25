@@ -171,6 +171,7 @@ const gameSlice = createSlice({
                 }
                 case Phase.Night: {
                     state.game.action = 'День'
+                    gameSlice.caseReducers.uploadChooseLog(state)
                     gameSlice.caseReducers.calculateNight(state)
                     gameSlice.caseReducers.clearChoose(state)
                     state.game.phase = Phase.Day
@@ -210,23 +211,38 @@ const gameSlice = createSlice({
         },
         MafiaChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.mafia = action.payload
-            const target = state.players.find(p => p.id === state.game.choose.mafia)
-            target && state.game.log.push(`Мафия выбрала игрока ${target.name}.`)
         },
         DonChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.don = action.payload
-            const target = state.players.find(p => p.id === state.game.choose.don)
-            target && state.game.log.push(`Дон проверяет игрока ${target.name}.`)
         },
         DoctorChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.doctor = action.payload
-            const target = state.players.find(p => p.id === state.game.choose.doctor)
-            target && state.game.log.push(`Доктор лечит игрока ${target.name}.`)
         },
         SheriffChoose: (state, action: PayloadAction<number>) => {
             state.game.choose.sheriff = action.payload
-            const target = state.players.find(p => p.id === state.game.choose.sheriff)
-            target && state.game.log.push(`Шериф проверяет игрока ${target.name}.`)
+        },
+        uploadChooseLog: (state) => {
+            let target:any
+
+            if (state.game.choose.mafia !== -1) {
+                target = state.players.find(p => p.id === state.game.choose.mafia)
+                target && state.game.log.push(`Мафия выбрала игрока ${target.name}.`)
+            }
+            if (state.game.choose.don !== -1) {
+                target = state.players.find(p => p.id === state.game.choose.don)
+                const don = state.players.find(p => p.role === Role.Don)
+                target && state.game.log.push(`${don && don.name} (Дон) проверяет игрока ${target.name}.`)
+            }
+            if (state.game.choose.doctor !== -1) {
+                target = state.players.find(p => p.id === state.game.choose.doctor)
+                const doctor = state.players.find(p => p.role === Role.Doctor)
+                target && state.game.log.push(`${doctor && doctor.name} (Доктор) лечит игрока ${target.name}.`)
+            }
+            if (state.game.choose.sheriff !== -1) {
+                target = state.players.find(p => p.id === state.game.choose.sheriff)
+                const sheriff = state.players.find(p => p.role === Role.Sheriff)
+                target && state.game.log.push(`${sheriff && sheriff.name} (Шериф) проверяет игрока ${target.name}.`)
+            }
         },
         calculateNight: (state) => {
             const {mafia, doctor, sheriff, don} = state.game.choose
