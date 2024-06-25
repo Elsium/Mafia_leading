@@ -174,7 +174,7 @@ const gameSlice = createSlice({
                     gameSlice.caseReducers.calculateNight(state)
                     gameSlice.caseReducers.clearChoose(state)
                     state.game.phase = Phase.Day
-                    state.game.log.push('Наступил день. Обсуждение.')
+                    state.game.log.push(`Наступил день ${state.game.day}. Обсуждение.`)
                     break
                 }
                 case Phase.Vote: {
