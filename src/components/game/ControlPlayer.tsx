@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     addScore,
     DoctorChoose,
@@ -23,11 +23,12 @@ interface IProps {
     player: IPlayer,
     isDon: boolean,
     isSheriff: boolean,
-    isDoctor: boolean
+    isDoctor: boolean,
+    firstDied: boolean,
+    setFirstDied: any
 }
 
-const ControlPlayer = ({player, isDon, isSheriff, isDoctor}: IProps) => {
-    const [plus, setPlus] = useState(true)
+const ControlPlayer = ({player, isDon, isSheriff, isDoctor, firstDied, setFirstDied}: IProps) => {
     const game = useSelector((state: RootState) => state.gameData.game)
     const countPlayers = useSelector((state: RootState) => state.gameData.playersCount)
     let color = ''
@@ -72,7 +73,7 @@ const ControlPlayer = ({player, isDon, isSheriff, isDoctor}: IProps) => {
     }
     const add = () => {
         dispatch(addScore(player.id))
-        setPlus(false)
+        setFirstDied(true)
     }
 
     return (
@@ -87,7 +88,7 @@ const ControlPlayer = ({player, isDon, isSheriff, isDoctor}: IProps) => {
                 <button onClick={doctor} disabled={game.phase !== Phase.Night || !player.isAlive || !isDoctor || player.role === Role.Doctor && game.doctorDelay > 0} className={`transition-opacity disabled:opacity-0 ${player.id === game.choose.doctor ? 'bg-black rounded-full text-white' : ''}`}><MedicationIcon fontSize={'small'}/></button>
                 <button onClick={sheriff} disabled={game.phase !== Phase.Night || !player.isAlive || player.role === Role.Sheriff || !isSheriff || player.checkedBySheriff} className={`transition-opacity ${player.checkedBySheriff ? 'bg-yellow-400 rounded-full text-white' : 'disabled:opacity-0'} ${player.id === game.choose.sheriff ? 'bg-black rounded-full text-white' : ''}`}><SearchIcon fontSize={'small'}/></button>
                 <button onClick={vote} disabled={game.phase !== Phase.Vote || !player.isAlive} className={`transition-opacity disabled:opacity-0 ${player.id === game.dayChoose ? 'bg-black rounded-full text-white' : ''}`}><HowToRegIcon fontSize={'small'}/></button>
-                <button onClick={add} disabled={!plus} className='transition-opacity disabled:opacity-0'><PlusOneIcon fontSize={'small'}/></button>
+                <button onClick={add} disabled={player.isAlive || firstDied} className='transition-opacity disabled:opacity-0'><PlusOneIcon fontSize={'small'}/></button>
             </div>
         </li>
     );

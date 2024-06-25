@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
 import ControlPlayer from "@/components/game/ControlPlayer";
@@ -11,12 +11,12 @@ const Players = () => {
     const isDon = players.find(p => p.role === Role.Don)?.isAlive || false
     const isSheriff = players.find(p => p.role === Role.Sheriff)?.isAlive || false
     const isDoctor = players.find(p => p.role === Role.Doctor)?.isAlive || false
-    console.log(isDoctor)
+    const [firstDied, setFirstDied] = useState(false)
     return (
         <div className='w-2/3 flex flex-col items-center gap-3'>
             <h2 className='text-xl font-quicksand'>Живых <span className='inline-block ml-3 font-poppins'>{alive}/{count}</span></h2>
             <ul className='w-full h-full grid xl:grid-cols-3 grid-cols-2 grid-rows-4 items-center'>
-                {players.map(p => <ControlPlayer key={p.id} player={p} isDon={isDon} isSheriff={isSheriff} isDoctor={isDoctor}/>)}
+                {players.map(p => <ControlPlayer key={p.id} player={p} isDon={isDon} isSheriff={isSheriff} isDoctor={isDoctor} firstDied={firstDied} setFirstDied={setFirstDied}/>)}
             </ul>
         </div>
     );
