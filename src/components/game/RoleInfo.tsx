@@ -5,6 +5,7 @@ import MedicationIcon from "@mui/icons-material/Medication";
 import SearchIcon from "@mui/icons-material/Search";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
 const RoleInfo = () => {
     return (
@@ -58,6 +59,10 @@ const RoleInfo = () => {
                 <div className='flex items-center gap-2'>
                     <PlusOneIcon/>
                     <p>Добавить 1 очко</p>
+                </div>
+                <div className='flex items-center gap-2'>
+                    <IndeterminateCheckBoxIcon/>
+                    <p>Убрать 1 очко</p>
                 </div>
             </div>
         </div>
