@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "@/redux/store";
-import actions from "@/components/game/Actions";
 
 export enum Role {None, Mafia, Don, Sheriff, Doctor, Peace}
 export enum Phase {None, Day, Night, Vote, FirstDay}
