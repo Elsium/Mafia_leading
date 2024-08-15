@@ -16,7 +16,7 @@ const Players = () => {
         <div className='w-2/3 flex flex-col items-center gap-3'>
             <h2 className='text-xl font-quicksand'>Живых <span className='inline-block ml-3 font-poppins'>{alive}/{count}</span></h2>
             <ul className='w-full h-full grid xl:grid-cols-3 grid-cols-2 grid-rows-4 items-center'>
-                {players.map(p => <ControlPlayer key={p.id} player={p} isDon={isDon} isSheriff={isSheriff} isDoctor={isDoctor} firstDied={firstDied} setFirstDied={setFirstDied}/>)}
+                {players.map((p, index) => <ControlPlayer key={p.id} index={index} player={p} isDon={isDon} isSheriff={isSheriff} isDoctor={isDoctor} firstDied={firstDied} setFirstDied={setFirstDied}/>)}
             </ul>
         </div>
     );

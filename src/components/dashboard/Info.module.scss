@@ -1,5 +1,5 @@
 .container p {
-  @apply font-quicksand px-5 py-3 rounded-2xl bg-blue-600 text-white w-1/2 text-center mt-3 cursor-pointer;
+  @apply font-quicksand px-5 py-3 rounded-2xl bg-blue-600 text-white w-1/2 text-center mt-3 cursor-pointer hover:bg-blue-800 active:bg-blue-600;
 }
 .container p:hover .container span {
   display: block;

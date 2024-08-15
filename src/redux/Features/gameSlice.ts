@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "@/redux/store";
+import actions from "@/components/game/Actions";
 
 export enum Role {None, Mafia, Don, Sheriff, Doctor, Peace}
 export enum Phase {None, Day, Night, Vote, FirstDay}
@@ -315,6 +316,13 @@ const gameSlice = createSlice({
                 state.game.log.push(`Игрок ${target.name} угадал мафию и получает очко.`)
             }
         },
+        removeScore: (state, action: PayloadAction<number>) => {
+            const target = state.players.find(p => p.id === action.payload)
+            if(target) {
+                target.score -= 1
+                state.game.log.push(`Игрок ${target.name} теряет очко за нарушение правил.`)
+            }
+        },
         resetGame: (state) => {
             state.players.forEach(player => {
                 player.role = Role.None;
@@ -389,5 +397,5 @@ const gameSlice = createSlice({
     }
 })
 
-export const {resetGame, resetScores, addScore, VoteChoose, SheriffChoose, DoctorChoose, DonChoose, MafiaChoose, changePhase, removeAllPlayers, addPlayerAction, removePlayer, startGame, endGame} = gameSlice.actions
+export const {removeScore, resetGame, resetScores, addScore, VoteChoose, SheriffChoose, DoctorChoose, DonChoose, MafiaChoose, changePhase, removeAllPlayers, addPlayerAction, removePlayer, startGame, endGame} = gameSlice.actions
 export default gameSlice.reducer
