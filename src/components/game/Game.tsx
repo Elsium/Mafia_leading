@@ -3,6 +3,7 @@ import Players from "@/components/game/Players";
 import RoleInfo from "@/components/game/RoleInfo";
 import Actions from "@/components/game/Actions";
 import Statistic from "@/components/game/Statistic";
+import {EndGameStat} from '@/components/game/EndGameStat'
 
 const Game = () => {
     return (
@@ -15,6 +16,7 @@ const Game = () => {
                 <Actions/>
                 <Statistic/>
             </div>
+            <EndGameStat/>
         </>
     );
 };
